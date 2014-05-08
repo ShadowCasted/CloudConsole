@@ -22,7 +22,7 @@ public class GlobalSettings {
 	
 	public GlobalSettings(){
 		try{
-
+			
 			settingsFile = new File(plugin.getDataFolder()+File.separator+"settings"+File.separator+"Settings.yml");
 			settingsFile.getParentFile().mkdirs();
 			config = YamlConfiguration.loadConfiguration(settingsFile);
@@ -41,11 +41,6 @@ public class GlobalSettings {
 
 	}
 	
-	public boolean getAllowEditingFromConsole(){return config.getBoolean("AllowEditingFromConsole");}
-	public GlobalSettings setAllowEditingFromConsole(boolean b){config.set("AllowEditingFromConsole", b);save();return this;}
-	
-	public boolean getInGameConfigEditing(){return config.getBoolean("InGameConfigEditing");}
-	public GlobalSettings setInGameConfigEditing(boolean b){config.set("InGameConfigEditing", b);save(); return this;}
 	
 	public int getPort(){return config.getInt("Port");}
 	public GlobalSettings setPort(int port){config.set("Port", port);save();System.out.println("\n\nThe Port For CC Was Changed. Please Restart The Server For This To Take Into Effect!\n\n");return this;}
@@ -59,9 +54,7 @@ public class GlobalSettings {
 	public boolean getTR(){return config.getBoolean("ThreadedRelease");}
 	public GlobalSettings setThreadedRelease(Boolean b){config.set("ThreadedRelease", b);save();return this;}
 
-	public boolean getAllowCommandStartStopRestart() {return config.getBoolean("AllowCommandStartStopRestart");}
-	public void setAllowCommandStopStartRestart(Boolean b){config.set("AllowCommandStartStopRestart", b);}
-
+	
 	
 	
 }

@@ -18,7 +18,7 @@ public class DataTransfer extends Thread{
 
 	private Client getClient(){return cluster.getClient();}
 
-	public boolean alive;
+	public boolean alive = true;
 	public synchronized boolean Alive(){return alive;}
 	public synchronized void setAlive(Boolean b){alive = b;}
 	
@@ -61,7 +61,7 @@ public class DataTransfer extends Thread{
 					}
 				}catch(Exception e){if(getClientCluster()!= null){getClientCluster().Terminate();}System.out.println(ID+") Ending Messager");break;}
 			}
-		}catch(Exception e){}
+		}catch(Exception e){e.printStackTrace();}
 		System.out.println(ID+") "+getThreadName()+"Stopped!");
 
 	}

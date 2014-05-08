@@ -40,7 +40,7 @@ public class CC implements CommandExecutor{
 			}
 			
 			
-			if(ClientHandler.getDataQueuer().getCSSR()){
+			if(sender instanceof Player){
 
 				
 				if(args[0].equalsIgnoreCase("Stop")){
@@ -80,28 +80,6 @@ public class CC implements CommandExecutor{
 			
 			
 			
-			if(!(sender instanceof Player)){
-				//The User Is Console
-				if(!ClientHandler.getDataQueuer().getAEFC()){ //if console editing isnt enabled
-					System.out.println("Editing From Console Is Not Enabled!");
-					return true;
-				}
-			}
-			
-			
-			if(!sender.isOp()){
-				sender.sendMessage("You need to be an operator to use this command.");
-				return true;
-			}
-			
-			if(!ClientHandler.getDataQueuer().getAIGCE()){ //if command config editing is allowed
-				sender.sendMessage("Config Editing by Command is disabled. Please enable it  manually.");
-				return true;
-			}
-			
-			
-			
-			
 			
 			
 			
@@ -109,52 +87,6 @@ public class CC implements CommandExecutor{
 				sender.sendMessage(available(Integer.parseInt(args[1]))+"");
 				return true;
 			}
-			
-			
-			
-			if(args[0].equalsIgnoreCase("setallowcommandstopstartrestart")||args[0].equalsIgnoreCase("setACSSR")){
-				if(sender instanceof Player){
-					if(args.length == 2){
-						if(args[1].equalsIgnoreCase("false")){
-							sender.sendMessage(ChatColor.RED+"Disabling Starting, Stopping, And Restarting Of The Service From Command!");
-							ClientHandler.getDataQueuer().setCSSR(false);
-						}else if (args[1].equalsIgnoreCase("true")){
-							sender.sendMessage(ChatColor.GREEN+"Enabled Starting, Stopping, And Restarting Of The Service From Command!");
-							ClientHandler.getDataQueuer().setCSSR(true);
-						}else{
-							sender.sendMessage(ChatColor.RED+"Sorry But Please Use True/False With This Command");
-						}
-					}else{
-						sender.sendMessage("Sorry But You Need To Have Exactly Two Paramaters, This Command And True/False");
-					}
-				}else{
-					System.out.println("Changing This Is Not Allowed From Console. Please Be Ingame!");
-				}
-				return true;
-			}
-			
-			
-			if(args[0].equalsIgnoreCase("setallowconfigeditingfromingame")||args[0].equalsIgnoreCase("setACEFIG")){
-				if(sender instanceof Player){
-					if(args.length == 2){
-						if(args[1].equalsIgnoreCase("false")){
-							sender.sendMessage(ChatColor.RED+"Disabling Editing The Config From Console. This Includes Creating, Deleting, And Editing Users!");
-							ClientHandler.getDataQueuer().setAIGCE(false);
-						}else if (args[1].equalsIgnoreCase("true")){
-							sender.sendMessage(ChatColor.GREEN+"Enabling Editing The Config From Console. This Includes Creating, Deleting, And Editing Users!");
-							ClientHandler.getDataQueuer().setAIGCE(true);
-						}else{
-							sender.sendMessage(ChatColor.RED+"Sorry But Please Use True/False With This Command");
-						}
-					}else{
-						sender.sendMessage("Sorry But You Need To Have Exactly Two Paramaters, This Command And True/False");
-					}
-				}else{
-					System.out.println("Changing This Is Not Allowed From Console. Please Be Ingame!");
-				}
-			}
-			
-			
 			
 			
 			

@@ -76,14 +76,6 @@ public class DataQueuer {
 	public synchronized boolean ThreadedRelease(){return getGlobalSettings().getTR();}
 	public synchronized void setThreadedRelease(Boolean b){getGlobalSettings().setThreadedRelease(b);}
 	
-	public synchronized boolean getAIGCE(){return getGlobalSettings().getInGameConfigEditing();}
-	public synchronized void setAIGCE(Boolean b){getGlobalSettings().setInGameConfigEditing(b);}
-	
-	public synchronized void setAEFC(boolean s){getGlobalSettings().setAllowEditingFromConsole(s);}
-	public synchronized boolean getAEFC(){return getGlobalSettings().getAllowEditingFromConsole();}
-	
-	public synchronized void setCSSR(Boolean b){getGlobalSettings().setAllowCommandStopStartRestart(b);}
-	public synchronized boolean getCSSR() {return getGlobalSettings().getAllowCommandStartStopRestart();}
 	
 	
 	private GlobalSettings gs;
