@@ -10,8 +10,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.Plugin;
 
 public abstract class ShadowCommand{
-
-
+	
 	public abstract String CommandString();
 
 	public abstract boolean ActUpon();
