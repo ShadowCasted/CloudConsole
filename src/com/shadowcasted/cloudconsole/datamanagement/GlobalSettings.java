@@ -6,6 +6,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
+import com.shadowcasted.cloudconsole.servermanagement.ClientHandler;
+
 public class GlobalSettings {
 
 	private static Plugin plugin;
@@ -17,7 +19,7 @@ public class GlobalSettings {
 	private File settingsFile;
 	public File getPlayerFile(){return settingsFile;}
 
-	public boolean save(){try{config.save(settingsFile);return true;}catch(Exception e){System.out.println("Couldn't Save File");return false;}}
+	public boolean save(){try{config.save(settingsFile);return true;}catch(Exception e){ClientHandler.getClientMap().Debug("Couldn't Save File");return false;}}
 	
 	
 	public GlobalSettings(){
@@ -37,13 +39,15 @@ public class GlobalSettings {
 			
 			save();
 
-		}catch(Exception e){System.out.println("Really fucked up");}
+		}catch(Exception e){ClientHandler.getClientMap().Debug("Really fucked up");}
 
 	}
 	
 	
+	
+	
 	public int getPort(){return config.getInt("Port");}
-	public GlobalSettings setPort(int port){config.set("Port", port);save();System.out.println("\n\nThe Port For CC Was Changed. Please Restart The Server For This To Take Into Effect!\n\n");return this;}
+	public GlobalSettings setPort(int port){config.set("Port", port);save();ClientHandler.getClientMap().Debug("\n\nThe Port For CC Was Changed. Please Restart The Server For This To Take Into Effect!\n\n");return this;}
 	
 	public int getMC(){return config.getInt("MaxConnections");}
 	public GlobalSettings setMaxConnections(int mc){config.set("MaxConnections", mc);save();return this;}

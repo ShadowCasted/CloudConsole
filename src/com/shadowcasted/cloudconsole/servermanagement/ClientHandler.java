@@ -17,16 +17,11 @@ import com.shadowcasted.cloudconsole.client.ClientCluster;
 import com.shadowcasted.cloudconsole.client.firePit;
 import com.shadowcasted.cloudconsole.datamanagement.DataQueuer;
 import com.shadowcasted.cloudconsole.listener.cListener;
-import com.shadowcasted.cloudconsole.magic.ChatInputMap;
 
 public class ClientHandler extends Thread{
 
 	private static ClientHandler ch = null;
-	public synchronized static ClientHandler getCH(){return ch;}
-	
-	private static ChatInputMap mapz;
-	public synchronized static void setChatInputMap(ChatInputMap map){ClientHandler.mapz = map;}
-	public synchronized static ChatInputMap getCM(){return mapz;}
+	public static ClientHandler getCH(){return ch;}
 	
 	private static ServerSocket server;
 	public synchronized static void setServerSocket(ServerSocket server){ClientHandler.server = server;}
@@ -53,41 +48,42 @@ public class ClientHandler extends Thread{
 			ClientHandler.plugin = plugin;
 			setDataQueuer(new DataQueuer());
 			setClientMap(new ClientMap());
-			setChatInputMap(new ChatInputMap());
 			
 			Bukkit.getServer().getPluginManager().registerEvents(new cListener(), plugin);
 		 	addFilter();
 		}else{
-			System.out.println("ClientHandler) Cloud Console Is Already Running... Please Do Something To Stop It, Such As Force Restarting The Server!");
+			Debug("ClientHandler) Cloud Console Is Already Running... Please Do Something To Stop It, Such As Force Restarting The Server!");
 		}
 	}
 	
-	public synchronized void Stop(){
+	public void Stop(){
 		try{
 			if(!alreadyRunning()){
-				System.out.println("ClientHandler Wasn't Running");
+				Debug("ClientHandler Wasn't Running");
 				return;
 			}
 			alive = false;
 			server.close();
 			clientmap.close();
-			System.out.println("ClientHandler Successfully Closed!");
+			Debug("ClientHandler Successfully Closed!");
 			
 		}catch(Exception e){e.printStackTrace();}
 		
 	}
 	
-	public synchronized void Start(){
+	private static void Debug(String text){clientmap.Debug(text);}
+	
+	public void Start(){
 		if(!alreadyRunning()){
 			try{
 				this.start();
 			}catch(Exception e){e.printStackTrace();}
 		}else{
-			System.out.println("Already Running");
+			Debug("Already Running");
 		}
 	}
 	
-	public synchronized boolean alreadyRunning(){
+	public boolean alreadyRunning(){
 		for(Thread t: Thread.getAllStackTraces().keySet()){
 			if(t.getName().contains("CloudConsole_Thingy_Please_Don't_End_This")){
 				return true;
@@ -97,8 +93,9 @@ public class ClientHandler extends Thread{
 	}
 	
 	public synchronized void Terminate(int ID){
-		getClientMap().removeClientCluster(ID);
+		clientmap.removeClientCluster(ID);
 	}
+	
 	/*
 	public synchronized void tellAll(String msg){
 		clientmap.tellAll(msg);
@@ -111,8 +108,10 @@ public class ClientHandler extends Thread{
 	public void run(){
 		try {
 			this.setName("CloudConsole_Thingy_Please_Don't_End_This");
+			
 			setServerSocket(new ServerSocket(getDataQueuer().getPort()));
-			System.out.println("ClientHandler) Server Started On " + getDataQueuer().getPort());
+			Debug("ClientHandler) Server Started On " + getDataQueuer().getPort());
+			System.out.println("CloudConsole Started On Port " + getDataQueuer().getPort());
 			int id = 1;
 			while(getAlive()){
 				try{
@@ -121,16 +120,17 @@ public class ClientHandler extends Thread{
 						ClientCluster c = new ClientCluster(id, tempSock);
 						getClientMap().addClientCluster(id, c);
 						c.setup();
-						System.out.println("ClientHandler) ClientCluster Added!");
+						Debug("ClientHandler) ClientCluster Added!");
 						id++;
 					}else{
 						new firePit(tempSock);
-						System.out.println("ClientHandler) Another one bites the dust");
+						Debug("ClientHandler) Another one bites the dust");
 					}
-				}catch(Exception e){System.out.println("Error Caught at ClientHandler(129)");}
+				}catch(Exception e){Debug("Error Caught at ClientHandler(129)");}
 			}
-		} catch (Exception e) {System.out.println("Error Caught at ClientHandler(131)");}
-		System.out.println("ClientHandler Thread Died");
+		} catch (Exception e) {Debug("Error Caught at ClientHandler(131)");}
+		Debug("ClientHandler Thread Died");
+		System.out.println("CloudConsole's Server Stopped!");
 	}
 	
 	

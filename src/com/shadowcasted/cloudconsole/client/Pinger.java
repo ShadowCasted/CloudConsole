@@ -2,13 +2,15 @@ package com.shadowcasted.cloudconsole.client;
 
 import java.util.Random;
 
+import com.shadowcasted.cloudconsole.servermanagement.ClientHandler;
+
 public class Pinger extends Thread{
 
 	private String lastStoredMessage = "null";
 	public synchronized String getLastMessage(){return lastStoredMessage;}
 	public synchronized void setLastMessage(String message){lastStoredMessage = message;}
 
-	private String lastSentMessage;
+	private String lastSentMessage = null;
 
 	private boolean isalive = true;
 	public synchronized boolean getAlive(){return isalive;}
@@ -50,7 +52,7 @@ public class Pinger extends Thread{
 			int counter = 0;
 			while(true){
 				do{
-					try{Thread.sleep(25);}catch(Exception e){}
+					try{Thread.sleep(25);}catch(Exception e){e.printStackTrace();}
 					counter++;
 					if(!isalive){break;}
 				}while(counter < 100);
@@ -74,7 +76,7 @@ public class Pinger extends Thread{
 			}
 
 		}catch(Exception e){}
-		System.out.println(cc.getID()+") Pinger Died");
+		ClientHandler.getClientMap().Debug(cc.getID()+") Pinger Died");
 	}
 
 

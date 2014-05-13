@@ -1,6 +1,46 @@
 name: Cloud Console v2.0
 version: 2.0.0
 main: com.shadowcasted.cloudconsole.main.Main
-commands:
-   CC:
-      description: "Stop Asking Questions!"
+permissions:
+    cloud.*:
+       description: Gives access to all CloudConsole commands
+       children:
+           cloud.terminal: true
+           cloud.users.*: true
+           cloud.server.*: true
+           cloud.config.*: true
+    cloud.terminal:
+        description: Allows access to the terminal
+    cloud.users.*:
+        description: Allows access to the users
+        children:
+            cloud.users.add: true
+            cloud.users.remove: true
+            cloud.users.list: true
+    cloud.users.add:
+        description: Allows you to add a user
+    cloud.users.remove:
+        description: Allows you to remove a user
+    cloud.users.list:
+        description: Allows you to list all users
+    cloud.server.*:
+        description: Allows access to the server commands
+        children:
+            cloud.server.stop: true
+            cloud.server.start: true
+            cloud.server.restart: true
+    cloud.server.stop:
+        description: Allows you to stop CloudConsole
+    cloud.server.start:
+        description: Allows you to start CloudConsole
+    cloud.server.restart:
+        description: Allows you to restart CloudConsole
+    cloud.config.*:
+        description: Allows access to the config
+        children:
+            cloud.config.view: true
+            cloud.config.edit: true
+    cloud.config.view:
+        description: Allows you to view the current settings
+    cloud.config.edit:
+        description: Allows you to edit the config

@@ -26,9 +26,9 @@ public class DataQueuer {
 		}
 	}
 	public synchronized void putUserInMap(Client c){
-		System.out.println("Putting " + c.getUsername() + " into the map!");
+		ClientHandler.getClientMap().Debug("Putting " + c.getUsername() + " into the map!");
 		map.put(c.getUsername(), new UserConfigClass(ClientHandler.getPlugin(),false,c.getUsername(),c.getPassword()));
-		System.out.println("Successfully put " +c.getUsername() + " into the map!");
+		ClientHandler.getClientMap().Debug("Successfully put " +c.getUsername() + " into the map!");
 	}
 	
 	public synchronized UserConfigClass getUserConfigFromMap(Client c){
@@ -55,7 +55,7 @@ public class DataQueuer {
 		UserConfigClass c = new UserConfigClass(username);
 		if(c.isReal()){
 			if(c.validUsername(username) && c.validPassword(password)){
-				System.out.println(username + " was validated and added to the list");
+				ClientHandler.getClientMap().Debug(username + " was validated and added to the list");
 				map.put(username, new UserConfigClass(ClientHandler.getPlugin(), false, username, password));
 				return true;
 			}
@@ -81,6 +81,15 @@ public class DataQueuer {
 	private GlobalSettings gs;
 	public synchronized GlobalSettings getGlobalSettings(){return gs;}
 	
+	
+	public void ListConfig(Player p){
+		String temp = ChatColor.GOLD+"\n=== Config ===";
+		temp += ChatColor.BLUE+"\nPort: " + ChatColor.AQUA+gs.getPort();
+		temp += ChatColor.BLUE+"\nFull Message: " + ChatColor.AQUA+gs.getFM();
+		temp += ChatColor.BLUE+"\nMax Connections: "+ChatColor.AQUA+gs.getMC();
+		temp += ChatColor.BLUE+"\nThreaded Release: "+ChatColor.AQUA+gs.getTR();
+		p.sendMessage(temp);
+	}
 	
 	
 	public synchronized void ListAccounts(Player p){

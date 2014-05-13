@@ -30,7 +30,7 @@ public class Client {
 	public synchronized String getPassword(){return password;}
 	
 	private BufferedWriter writer = null;
-	public synchronized void setBufferedWriter(BufferedWriter writer){System.out.println("setBufferedWriter() from Client");this.writer = writer;}
+	public synchronized void setBufferedWriter(BufferedWriter writer){this.writer = writer;}
 	public synchronized void setSocketWriter(){try {writer = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));} catch (IOException e) {}}
 	public synchronized BufferedWriter getWriter(){return writer;}
 	

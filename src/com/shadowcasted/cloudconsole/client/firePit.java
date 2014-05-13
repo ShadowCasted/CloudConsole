@@ -32,8 +32,8 @@ public class firePit extends Thread{
 			socket = sock;
 			reader = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			DeathMessage = ClientHandler.getDataQueuer().getDeathMessage();
-			if(ClientHandler.getDataQueuer().ThreadedRelease()){System.out.println("Running firePut as thread");this.start();}
-			else{System.out.println("Running firePit as method");this.run();}
+			if(ClientHandler.getDataQueuer().ThreadedRelease()){ClientHandler.getClientMap().Debug("Running firePut as thread");this.start();}
+			else{ClientHandler.getClientMap().Debug("Running firePit as method");this.run();}
 		}catch(Exception e){}
 	}
 

@@ -14,16 +14,17 @@ import org.bukkit.plugin.Plugin;
 public abstract class ChatTerminal implements Listener {
 
 	
-	public abstract void onAction();
+	public abstract boolean onAction();
 	public abstract String getName();
-
+	public abstract String getStartingMessage();
 	
 	private static HashMap<String, ChatTerminal> map = new HashMap<String, ChatTerminal>();
 	public static HashMap<String, ChatTerminal> getMap(){return map;}
 
 
 	public static boolean terminate(ChatTerminal t){
-		if(map.containsKey(t.getName())){map.remove(t.getName()); return true;}
+		if(map.containsKey(t.getName())){
+			map.remove(t.getName()); return true;}
 		else{return false;}
 	}
 	
@@ -46,7 +47,7 @@ public abstract class ChatTerminal implements Listener {
 		public void onChatEvent(PlayerChatEvent event){
 			if(map.containsKey(event.getPlayer().getName())){
 				ChatTerminal.event = event;
-				map.get(event.getPlayer().getName()).onAction();
+				event.setCancelled(map.get(event.getPlayer().getName()).onAction());
 			}
 		}
 		
@@ -63,6 +64,7 @@ public abstract class ChatTerminal implements Listener {
 	
 	public static Player getPlayer(){return event.getPlayer();}
 	public static String getMessage(){return event.getMessage();}
+	
 	
 	
 }

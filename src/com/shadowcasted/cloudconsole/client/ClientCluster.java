@@ -33,19 +33,19 @@ public class ClientCluster {
 	
 	public ClientCluster (int id, Socket sock){
 		active = true;
-		setID(id);
-		setClient(new Client(this, sock));
+		ID = id;
+		client = new Client(this, sock);
 		
 	}
 	
 
-	public synchronized ClientCluster setup(){
+	public ClientCluster setup(){
 		
-		setDataTransfer(new DataTransfer(this));
-		getDataTransfer().start();
+		datamanager = new DataTransfer(this);
+		datamanager.start();
 		
-		setPinger(new Pinger(this));
-		getPinger().start();
+		ping = new Pinger(this);
+		ping.start();
 		return this;
 	}
 	
@@ -72,7 +72,7 @@ public class ClientCluster {
 	
 	
 	
-	public synchronized boolean Alive(){
+	public boolean Alive(){
 		if(getClient().getActive() || getDataTransfer().getActive()){return true;}
 		else{return false;}
 	}
@@ -84,15 +84,15 @@ public class ClientCluster {
 	public synchronized boolean Terminate(){
 		if(setup && !isBeingTerminated){
 			try{
-				System.out.println(ID + ") Attempting to terminate ");
-				isBeingTerminated = true;
+				ClientHandler.getClientMap().Debug(ID + ") Attempting to terminate ");
+				setTermination(true);
 				active = false;
-				getPinger().setAlive(false);
-				getDataTransfer().setAlive(false);
-				getDataTransfer().setClientCluster(null);
-				getClient().getSocket().close();
+				ping.setAlive(false);
+				datamanager.setAlive(false);
+				datamanager.setClientCluster(null);
+				client.getSocket().close();
 			}catch(Exception e){}
-			ClientHandler.getCH().Terminate(getID());
+				ClientHandler.getCH().Terminate(getID());
 			return true;
 		}
 		return false;

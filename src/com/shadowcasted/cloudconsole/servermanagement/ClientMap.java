@@ -13,45 +13,45 @@ public class ClientMap {
 	public synchronized void addClientCluster(int id, ClientCluster cluster){
 		System.out.println("ClientClusterMap) Trying To Add " + id);
 		try{
-			System.out.println("ClientClusterMap) Point A " + id);
+			Debug("ClientClusterMap) Point A " + id);
 			if(!ClientClusterMap.containsKey(id)){
-				System.out.println("ClientClusterMap) Point B " + id);
+				Debug("ClientClusterMap) Point B " + id);
 				getClientMap().put(id, cluster);
-				System.out.println("ClientClusterMap) Point C " + id);
+				Debug("ClientClusterMap) Point C " + id);
 				cluster.setSetup(true);
-				System.out.println("ClientClusterMap) Added ID " + id);
+				Debug("ClientClusterMap) Added ID " + id);
 			}else{
-				System.out.println("ClientClusterMap) Point D " + id);
+				Debug("ClientClusterMap) Point D " + id);
 				getClientMap().remove(id);
-				System.out.println("ClientClusterMap) Point E " + id);
+				Debug("ClientClusterMap) Point E " + id);
 				getClientMap().put(id, cluster);
-				System.out.println("ClientClusterMap) Point F " + id);
+				Debug("ClientClusterMap) Point F " + id);
 				cluster.setSetup(true);
-				System.out.println("ClientClusterMap) Point G " + id);
-				System.out.println("ClientClusterMap) Added ID " + id);
+				Debug("ClientClusterMap) Point G " + id);
+				Debug("ClientClusterMap) Added ID " + id);
 			}
-		}catch(Exception e){e.printStackTrace();System.out.println("ClientClusterMap) Something Failed In addClientCluster()");}
+		}catch(Exception e){e.printStackTrace();Debug("ClientClusterMap) Something Failed In addClientCluster()");}
 	}
 
 	public synchronized void removeClientCluster(int id){
-		System.out.println("removeClientCluster() from ClientMap");
+		Debug("removeClientCluster() from ClientMap");
 		try{
-			if(getClientMap().containsKey(id)){getClientMap().remove(id); System.out.println("ClientClusterMap) Removed ID " + id);}
-			else{System.out.println("ClientClusterMap) The ID " + id + " Doesn't Exist, So Cannot Remove It!");}
-		}catch(Exception e){e.printStackTrace();System.out.println("ClientClusterMap) Something Failed In removeClientCluster()");}
+			if(getClientMap().containsKey(id)){getClientMap().remove(id); Debug("ClientClusterMap) Removed ID " + id);}
+			else{Debug("ClientClusterMap) The ID " + id + " Doesn't Exist, So Cannot Remove It!");}
+		}catch(Exception e){e.printStackTrace();Debug("ClientClusterMap) Something Failed In removeClientCluster()");}
 	}
 
-	public synchronized void close(){
+	public void close(){
 		try{
 			for(ClientCluster c: ClientClusterMap.values()){
 				c.getDataTransfer().sendMessage("Alert CloudConsole Stopped!");
 				c.Terminate();
 			}
-		}catch(Exception e){e.printStackTrace();System.out.println("Error Occured But Was Caught");}
+		}catch(Exception e){e.printStackTrace();Debug("Error Occured But Was Caught");}
 	}
 
 
-	public synchronized void tellAll(final String message){
+	public void tellAll(final String message){
 		new Thread(new Runnable(){
 			public void run(){
 				try{
@@ -67,7 +67,7 @@ public class ClientMap {
 		}).start();
 	}
 
-	public synchronized void ConsoleOutput(final String message){
+	public void ConsoleOutput(final String message){
 		new Thread(new Runnable(){
 			public void run(){
 				for(ClientCluster c: ClientClusterMap.values()){
@@ -83,7 +83,25 @@ public class ClientMap {
 		}).start();
 	}
 
-	public synchronized void ChatOutput(final String message){
+	
+	public void Debug(final String message){
+		new Thread(new Runnable(){
+			public void run(){
+				for(ClientCluster c: ClientClusterMap.values()){
+					if(c.Alive()){
+						if(ClientHandler.getDataQueuer().isRealUser(c.getClient())){
+							if(ClientHandler.getDataQueuer().getUserConfig(c.getClient()).hasPermission("Console.Debug")){
+								c.getDataTransfer().sendMessage("Debug "+message);
+							}
+						}
+					}
+				}
+
+			}
+		}).start();
+	}
+	
+	public void ChatOutput(final String message){
 		new Thread(new Runnable(){
 			public void run(){
 				for(ClientCluster c: ClientClusterMap.values()){
@@ -166,7 +184,7 @@ public class ClientMap {
 		}
 	}
 
-	public synchronized boolean isLoggedIn(String name){System.out.println("isLoggedIn() from ClientMap");return checkUsername(name);}
+	public synchronized boolean isLoggedIn(String name){Debug("isLoggedIn() from ClientMap");return checkUsername(name);}
 
 	public synchronized int aliveCount(){
 	//	System.out.println("aliveCount() from ClientMap");
@@ -182,7 +200,7 @@ public class ClientMap {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		System.out.println("ClientMap) Currently there are " + counter +" clients alive!");
+		Debug("ClientMap) Currently there are " + counter +" clients alive!");
 		return counter;
 	}
 

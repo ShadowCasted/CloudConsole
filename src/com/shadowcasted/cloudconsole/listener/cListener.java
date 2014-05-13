@@ -3,8 +3,8 @@ package com.shadowcasted.cloudconsole.listener;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 
+import com.shadowcasted.cloudconsole.parsing.Chat;
 import com.shadowcasted.cloudconsole.parsing.Command;
 import com.shadowcasted.cloudconsole.parsing.LoginChecker;
 import com.shadowcasted.cloudconsole.servermanagement.ClientHandler;
@@ -13,7 +13,7 @@ import com.shadowcasted.cloudconsole.servermanagement.ClientHandler;
 public class cListener implements Listener{
 
 	public cListener(){
-		System.out.println("Listener Started!");
+		ClientHandler.getClientMap().Debug("Listener Started!");
 	}
 	
 	@EventHandler
@@ -33,6 +33,10 @@ public class cListener implements Listener{
 				event.getClientCluster().getPinger().setLastMessage(event.getMessage());
 				//System.out.println(event.getClientCluster().getID()+") Ping Message Was Set");
 			}
+			if(event.getMessage().startsWith("Chat ")){
+				new Chat(event.getMessage().replaceFirst("Chat ", ""),event.getClientCluster());
+				//System.out.println(event.getClientCluster().getID()+") Ping Message Was Set");
+			}
 			
 		}else{
 			event.getClientCluster().getDataTransfer().sendMessage("Sorry But You Are Not A Valid User");event.getClientCluster().Terminate();
@@ -42,20 +46,11 @@ public class cListener implements Listener{
 	
 	@EventHandler
 	public void onPlayerChat(PlayerChatEvent event){
-		if(ClientHandler.getCM().PlayerInChat(event.getPlayer().getName())){
-			ClientHandler.getCM().doSomething(event.getPlayer().getName(), event.getMessage(), event);
-			return;
-		}
+		if(!event.isCancelled())
 		ClientHandler.getClientMap().ChatOutput("<"+event.getPlayer().getName().toString()+"> "+event.getMessage());
 	}
 	
 	
-	@EventHandler
-	public void onPlayerDisconnect(PlayerQuitEvent event){
-		if(ClientHandler.getCM().PlayerInChat(event.getPlayer().getName())){
-			ClientHandler.getCM().removePlayer(event.getPlayer().getName());
-		}
-	}
-	
+
 	
 }

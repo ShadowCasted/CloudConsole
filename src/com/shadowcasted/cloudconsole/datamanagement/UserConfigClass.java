@@ -7,6 +7,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
+import com.shadowcasted.cloudconsole.servermanagement.ClientHandler;
+
 public class UserConfigClass {
 
 	private static Plugin plugin;
@@ -23,7 +25,7 @@ public class UserConfigClass {
 	private File settingsFile;
 	public File getPlayerFile(){return settingsFile;}
 
-	public boolean save(){try{config.save(settingsFile);System.out.println("Saved File ");return true;}catch(Exception e){System.out.println("Couldn't Save File");return false;}}
+	public boolean save(){try{config.save(settingsFile);System.out.println("Saved File ");return true;}catch(Exception e){ClientHandler.getClientMap().Debug("Couldn't Save File");return false;}}
 
 
 	public UserConfigClass(String name){
@@ -39,7 +41,7 @@ public class UserConfigClass {
 			}
 
 
-		}catch(Exception e){System.out.println("Really fucked up");}
+		}catch(Exception e){ClientHandler.getClientMap().Debug("Really fucked up");}
 
 	}
 
@@ -54,7 +56,7 @@ public class UserConfigClass {
 				config.addDefault("Password", password);
 				config.addDefault("Permissions","");
 				config.addDefault("Commands", "");
-				config.addDefault("ChatAlias", "<[Console]" + name+">");
+				config.addDefault("ChatAlias", "<"+"\u00A7b\u00A7l[Console]\u00A7r " + name+">");
 				config.save(settingsFile);
 				isreal = true;
 			}else{
@@ -137,12 +139,14 @@ public class UserConfigClass {
 
 	public boolean hasPermission(String perm){
 		if(isReal()){
-			for(String s: getList("Permissions")){
-				if(s.equals(perm)){
-					return true;
+			try{
+				for(String s: getList("Permissions")){
+					if(s.equals(perm)){
+						return true;
+					}
 				}
-			}
-			return false;
+				return false;
+			}catch(Exception e){return false;}
 		}else{
 			return false;
 		}

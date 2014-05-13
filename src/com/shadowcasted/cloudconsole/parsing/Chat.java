@@ -14,10 +14,11 @@ public class Chat {
 			if(ClientHandler.getDataQueuer().isRealUser(c.getClient())){
 				if(ClientHandler.getDataQueuer().getUserConfig(c.getClient()).hasPermission("Chat.Talk")){
 					Bukkit.broadcastMessage(ClientHandler.getDataQueuer().getChatFormat(c.getClient())+" "+text);
+					ClientHandler.getClientMap().ChatOutput(ClientHandler.getDataQueuer().getChatFormat(c.getClient())+" "+text);
 				}else{
 					c.getDataTransfer().sendMessage("Sorry but you don't have permissions for doing commands!");
 				}
 			}
-		}catch(Exception e){}
+		}catch(Exception e){e.printStackTrace();}
 	}
 }

@@ -13,7 +13,7 @@ public class Command {
 			command = command.replaceFirst("Command ", "");
 			if(ClientHandler.getDataQueuer().isRealUser(c.getClient())){
 				if(ClientHandler.getDataQueuer().getUserConfig(c.getClient()).hasPermission("Console.Commands")){
-					if(ClientHandler.getDataQueuer().getUserConfig(c.getClient()).canUseCommand(rawCommand(command))){
+					if(ClientHandler.getDataQueuer().getUserConfig(c.getClient()).canUseCommand(rawCommand(command))||ClientHandler.getDataQueuer().getUserConfig(c.getClient()).canUseCommand("all")){
 						Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), command);
 					}else{
 						c.getDataTransfer().sendMessage("Sorry but you don't have permissions for doing that command!");

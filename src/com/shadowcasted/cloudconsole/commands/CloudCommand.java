@@ -2,7 +2,6 @@ package com.shadowcasted.cloudconsole.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 
 import com.shadowcasted.cloudconsole.servermanagement.ClientHandler;
 
@@ -40,14 +39,8 @@ public class CloudCommand extends ShadowCommand{
 			
 			
 
-			if(getArguments()[0].equalsIgnoreCase("edit")){
-				if(getArguments().length > 2){
-					
-					if(getArguments()[1].equalsIgnoreCase("console")){
-						
-					}
-					
-				}
+			if(getArguments()[0].equalsIgnoreCase("console")){
+				new CloudTerminal(getPlayer());
 			}
 
 
